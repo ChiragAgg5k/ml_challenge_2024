@@ -9,7 +9,7 @@ from io import BytesIO
 import torch
 import torchvision.transforms as transforms
 from torchvision.models import resnet50, ResNet50_Weights
-from transformers import ViTFeatureExtractor, ViTForImageClassification
+from transformers import ViTImageProcessor, ViTForImageClassification
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -46,12 +46,12 @@ def extract_features(image):
     return features.squeeze().cpu().numpy()
 
 def load_vit_model():
-    feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
+    image_processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224')
     model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224').to(device)
-    return feature_extractor, model
+    return image_processor, model
 
-def extract_vit_features(image, feature_extractor, model):
-    inputs = feature_extractor(images=image, return_tensors="pt").to(device)
+def extract_vit_features(image, image_processor, model):
+    inputs = image_processor(images=image, return_tensors="pt").to(device)
     with torch.no_grad():
         outputs = model(**inputs)
     return outputs.logits.squeeze().cpu().numpy()

@@ -12,10 +12,6 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.models import resnet50, ResNet50_Weights
 from transformers import ViTImageProcessor, ViTForImageClassification
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from sklearn.preprocessing import LabelEncoder
 import joblib
 from tqdm import tqdm
 
@@ -83,7 +79,7 @@ if __name__ == "__main__":
     label_encoder = joblib.load(os.path.join(MODEL_FOLDER, 'label_encoder.joblib'))
     
     # Load test data
-    test = pd.read_csv(os.path.join(DATASET_FOLDER, 'test.csv'))
+    test = pd.read_csv(os.path.join(DATASET_FOLDER, 'sample_test.csv'))
     test = test.head(10)  # Only use the first 50 samples for testing
     
     # Make predictions with progress bar
